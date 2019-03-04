@@ -1,3 +1,4 @@
+import {Application, Request, Response} from "express";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Routes } from "./routes/routes";
@@ -13,20 +14,7 @@ class App
 
     private connection: Connection;
 
-    constructor()
-    {
-        // this.app = express();
-
-        // this.setDatabaseConnection()
-        // .then((connection) => {
-        //     this.setMiddlewares();
-        //     this.router = new Routes(this.app);
-        //     this.router.setAppRoutes();
-        // })
-        // .catch((err) => console.log("Não foi possível conectar ao banco de dados! MSG => " + err));
-    }
-
-    public async initialize(): Promise<express.Application>
+    public async initialize(): Promise<Application>
     {
         try {
             await this.setDatabaseConnection();
@@ -37,9 +25,9 @@ class App
 
         this.app = express();
 
-        this.setMiddlewares();
         this.router = new Routes(this.app);
-        this.router.setAppRoutes();
+
+        this.setMiddlewares();
 
         return this.app;
     }
@@ -48,6 +36,21 @@ class App
     {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({extended: false}));
+
+        this.app.use('/api', this.router.getApiRoutes());
+
+        this.app.use(this.notFoundRequest);
+        this.app.use(this.genericError);
+    }
+
+    private notFoundRequest(request: Request, response: Response, next: Function)
+    {
+        response.status(404).send();
+    }
+
+    private genericError(error: Error, request: Request, response: Response, next: Function)
+    {
+        response.status(500).json({ error: error.name, message: error.message });
     }
 
     private async setDatabaseConnection()

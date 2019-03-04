@@ -1,49 +1,32 @@
 import {Route} from "../utils/route";
 import {readdirSync} from 'fs';
-import {Application, Request, Response} from "express";
+import {Application, Request, Response, Router} from "express";
 
 export class Routes
 {
     private app: Application;
-    private routes: Route[];
 
     constructor(app: Application)
     {
         this.app = app;
-        this.routes = this.getRoutesInDirectory();
     }
 
-    private getRoutesInDirectory(): Route[]
+    public getApiRoutes(): Router[]
     {
-        return readdirSync(__dirname)
-            .filter(file => this.isValidRouteFile(file))
-            .map(file => this.getRoutesFromFile(file))
-            .reduce((accumulator, current) => (accumulator === undefined) ? current : accumulator.concat(current));
+        const apiDir = __dirname + "/api";
+
+        return readdirSync(apiDir)
+            .filter(file => this.isValidRouteFile(file, apiDir))
+            .map(file => this.getRoutesFromFile(file, apiDir));
     }
 
-    private getRoutesFromFile(file: string): Route[]
+    private getRoutesFromFile(file: string, dirname: string = __dirname): Router
     {
-        return require(__dirname + "/" + file).Routes;
+        return require(dirname + "/" + file).Routes();
     }
 
-    private isValidRouteFile(file: string): boolean
+    private isValidRouteFile(file: string, dirname: string = __dirname): boolean
     {
-        return (file.search(/\.js$/) > 0) && (__dirname + "/" + file !== __filename);
-    }
-
-    public setAppRoutes()
-    {
-        this.routes.forEach(route => {
-
-            (this.app as any)[route.getMethod()](route.getPath(), (req: Request, res: Response, next: Function) => {
-                const result = (new (route.getController() as any))[route.getAction()](req, res, next);
-                if (result instanceof Promise) {
-                    result.then(result => result !== null && result !== undefined ? res.send(result) : undefined);
-
-                } else if (result !== null && result !== undefined) {
-                    res.json(result);
-                }
-            });
-        });
+        return (file.search(/\.js$/) > 0) && (dirname + "/" + file !== __filename);
     }
 }

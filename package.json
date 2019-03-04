@@ -5,7 +5,9 @@
   "main": "./build/server.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node ./src/server.ts",
+    "dev": "npm-run-all -p watch watch-server",
+    "watch": "tsc -w",
+    "watch-server": "nodemon ./build/server.js",
     "start": "tsc && nodemon ./build/server.js",
     "prod": "npm run build && npm run start"
   },
