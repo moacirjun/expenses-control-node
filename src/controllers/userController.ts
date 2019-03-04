@@ -5,22 +5,47 @@ import {ControllerInterface} from "./controllerInterface";
 
 export class UserController implements ControllerInterface
 {
-    private userRepository = getRepository(User);
+    private userRepository: Repository<User>;
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.find();
+    constructor()
+    {
+        this.userRepository = getRepository(User);
     }
 
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.findOne(request.params.id);
+    public async all(request: Request, response: Response, next: NextFunction)
+    {
+        let allUsers = await this.userRepository.find();
+        response.status(200).send(allUsers);
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.userRepository.save(request.body);
+    public async one(request: Request, response: Response, next: NextFunction)
+    {
+        let user = await this.userRepository.findOne(request.params.id);
+
+        if (user === null || user === undefined) {
+            return next(new Error(`User whit ID '${request.params.id}' not found`));
+        }
+
+        response.status(200).send(user);
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
+    public async save(request: Request, response: Response, next: NextFunction)
+    {
+        let user = await this.userRepository.save(request.body);
+
+        response.status(201).send(user);
+    }
+
+    public async remove(request: Request, response: Response, next: NextFunction)
+    {
         let userToRemove = await this.userRepository.findOne(request.params.id);
+
+        if (userToRemove === null || userToRemove === undefined) {
+            return next(new Error(`User whit ID '${request.params.id}' not found`));
+        }
+
         await this.userRepository.remove(userToRemove);
+
+        response.status(204).send({});
     }
 }
