@@ -1,9 +1,23 @@
 {
-    "name": "default",
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
     "username": "moacirjun",
     "password": "MoaJun21",
-    "database": "first_api_typeorm"
+    "database": "first_api_typeorm",
+    "logging": false,
+    "entities": [
+       "build/models/entity/**/*.js"
+    ],
+    "migrations": [
+       "build/database/migration/**/*.js"
+    ],
+    "subscribers": [
+       "build/subscriber/**/*.js"
+    ],
+    "cli": {
+       "entitiesDir": "build/models/entity",
+       "migrationsDir": "build/database/migration",
+       "subscribersDir": "build/subscriber"
+    }
  }

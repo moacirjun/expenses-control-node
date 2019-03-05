@@ -1,16 +1,8 @@
-import {Route} from "../utils/route";
 import {readdirSync} from 'fs';
-import {Application, Request, Response, Router} from "express";
+import {Router} from "express";
 
 export class Routes
 {
-    private app: Application;
-
-    constructor(app: Application)
-    {
-        this.app = app;
-    }
-
     public getApiRoutes(): Router[]
     {
         const apiDir = __dirname + "/api";
