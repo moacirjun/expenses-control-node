@@ -16,8 +16,8 @@
        "build/subscriber/**/*.js"
     ],
     "cli": {
-       "entitiesDir": "build/models/entity",
-       "migrationsDir": "build/database/migration",
-       "subscribersDir": "build/subscriber"
+       "entitiesDir": "src/models/entity",
+       "migrationsDir": "src/database/migration",
+       "subscribersDir": "src/subscriber"
     }
  }

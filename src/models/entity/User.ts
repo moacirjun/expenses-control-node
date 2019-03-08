@@ -30,7 +30,8 @@ export class User
         type: 'numeric',
         nullable: false,
         precision: 3,
-        scale: 0
+        scale: 0,
+        name: 'age'
     })
     years_old: number;
 }

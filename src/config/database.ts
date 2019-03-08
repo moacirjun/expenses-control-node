@@ -1,4 +1,4 @@
-import {createConnection, getConnectionOptions, Connection} from "typeorm";
+import {createConnection, Connection} from "typeorm";
 
 export async function connect(): Promise<Connection>
 {
