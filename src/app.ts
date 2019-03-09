@@ -1,7 +1,8 @@
-import {Application, Request, Response} from "express";
+import {Application} from "express";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Routes } from "./routes/routes";
+import {Middlewares} from "./config/middlewares";
 
 class App
 {
@@ -26,18 +27,10 @@ class App
 
         this.app.use('/api', this.routes.getApiRoutes());
 
-        this.app.use(this.notFoundRequest);
-        this.app.use(this.genericError);
-    }
+        this.app.use(Middlewares.entityNotFound);
 
-    private notFoundRequest(request: Request, response: Response, next: Function)
-    {
-        response.status(404).send();
-    }
-
-    private genericError(error: Error, request: Request, response: Response, next: Function)
-    {
-        response.status(500).json({ error: error.name, message: error.message });
+        this.app.use(Middlewares.notFoundRequest);
+        this.app.use(Middlewares.genericError);
     }
 }
 

@@ -2,6 +2,7 @@ import  { User } from "../models/entity/User";
 import {Request, Response, NextFunction} from "express";
 import {Repository, getRepository} from "typeorm";
 import {ControllerInterface} from "./controllerInterface";
+import { EntityNotFoundError } from "../exceptions/EntityNotFoundError";
 
 export class UserController implements ControllerInterface
 {
@@ -23,7 +24,7 @@ export class UserController implements ControllerInterface
         let user = await this.userRepository.findOne(request.params.id);
 
         if (user === null || user === undefined) {
-            return next(new Error(`User whit ID '${request.params.id}' not found`));
+            return next(new EntityNotFoundError("User", request.params.id));
         }
 
         response.status(200).send(user);
@@ -41,7 +42,7 @@ export class UserController implements ControllerInterface
         let userToRemove = await this.userRepository.findOne(request.params.id);
 
         if (userToRemove === null || userToRemove === undefined) {
-            return next(new Error(`User whit ID '${request.params.id}' not found`));
+            return next(new EntityNotFoundError("User", request.params.id));
         }
 
         await this.userRepository.remove(userToRemove);
