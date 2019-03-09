@@ -28,9 +28,9 @@ class App
         this.app.use('/api', this.routes.getApiRoutes());
 
         this.app.use(Middlewares.entityNotFound);
+        this.app.use(Middlewares.genericError);
 
         this.app.use(Middlewares.notFoundRequest);
-        this.app.use(Middlewares.genericError);
     }
 }
 

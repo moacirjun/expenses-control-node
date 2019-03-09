@@ -9,6 +9,10 @@ export class Middlewares
 
     public static entityNotFound(error: EntityNotFoundError, request: Request, response: Response, next: Function)
     {
+        if (!(error instanceof EntityNotFoundError)) {
+            return next(error);
+        }
+        
         response.status(404).send({code: 404, message: error.message});
     }
 
