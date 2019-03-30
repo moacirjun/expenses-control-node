@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "watch-server": "nodemon ./build/server.js",
     "start": "node ./build/server.js",
-    "prod": "npm run build && npm run start"
+    "prod": "npm run build && npm run start",
+    "typeorm-run-migration": "typeorm migration:run"
   },
   "author": "Moacir Lima Jr",
   "license": "ISC",
