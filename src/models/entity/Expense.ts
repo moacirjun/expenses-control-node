@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, JoinColumnOptions, RelationOptions} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
 import { Category } from "./Category";
 
 @Entity('tb_expense')
@@ -28,7 +28,7 @@ export class Expense {
     })
     amount: number
 
-    @ManyToOne(type => Category, category => category.expenses, {nullable: false})
+    @ManyToOne(type => Category, category => category.expenses, {nullable: false, eager: true})
     @JoinColumn({name: "category_id"})
     category: Category;
 }

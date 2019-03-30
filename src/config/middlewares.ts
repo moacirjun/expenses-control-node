@@ -9,11 +9,11 @@ export class Middlewares
 
     public static entityNotFound(error: EntityNotFoundError, request: Request, response: Response, next: Function)
     {
-        if (!(error instanceof EntityNotFoundError)) {
-            return next(error);
+        if (error.name === "EntityNotFoundError") {
+            return response.status(404).send({code: 404, message: error.message});
         }
         
-        response.status(404).send({code: 404, message: error.message});
+        next(error);
     }
 
     public static genericError(error: Error, request: Request, response: Response, next: Function)
