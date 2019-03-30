@@ -1,9 +1,11 @@
 import {connect} from "./config/database";
 import app from "./app";
-const PORT = 3000;
+import * as dotenv from "dotenv";
 
 (async function startServer()
 {
+    dotenv.config();
+
     console.log('Connecting to database...');    
     try {
         
@@ -20,8 +22,8 @@ const PORT = 3000;
         var application = await app.initialize();
         
         //start the server
-        application.listen(PORT);        
-        console.log('Express server linsten port: ' + PORT);
+        application.listen(process.env.PORT);        
+        console.log('Express server linsten port: ' + process.env.PORT);
 
     } catch (error) {
         console.log('Error on initializing server. MSG: ' + error);

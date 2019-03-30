@@ -1,10 +1,6 @@
 {
     "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "moacirjun",
-    "password": "MoaJun21",
-    "database": "first_api_typeorm",
+    "url": "postgres://moacirjun:MoaJun21@localhost:5432/first_api_typeorm",
     "logging": false,
     "entities": [
        "build/models/entity/**/*.js"
